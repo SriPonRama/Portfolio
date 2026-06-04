@@ -9,7 +9,7 @@ const skillCategories = [
     icon: <Code2 className="h-5 w-5 text-[#B7D0CC]" />,
     iconBg: "bg-[#B7D0CC]/10 border-[#B7D0CC]/20",
     accentClass: "card-accent-green",
-    skills: ["C", "C++", "Python", "Java", "MySQL"],
+    skills: ["C", "C++", "Python", "Java", "SQL"],
   },
   {
     title: "Frameworks & Tech",
