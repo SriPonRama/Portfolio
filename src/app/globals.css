@@ -1,0 +1,211 @@
+@import "tailwindcss";
+
+:root {
+  --background: #020202;
+  --foreground: #E9ECEC;
+}
+
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-outfit), system-ui, sans-serif;
+  --font-display: var(--font-jakarta), system-ui, sans-serif;
+
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-pulse-slow: pulse-slow 5s ease-in-out infinite;
+  --animate-spin-slow: spin-slow 22s linear infinite;
+  --animate-spin-reverse: spin-reverse 16s linear infinite;
+  --animate-shimmer: shimmer 3s linear infinite;
+  --animate-ring-pulse: ring-pulse 3.5s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-14px); }
+}
+
+@keyframes pulse-slow {
+  0%, 100% { opacity: 0.12; transform: scale(1); }
+  50% { opacity: 0.38; transform: scale(1.15); }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes spin-reverse {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes ring-pulse {
+  0%, 100% { opacity: 0.35; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.04); }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  overflow-x: hidden;
+  font-family: var(--font-sans);
+}
+
+/* ─── Custom scrollbar ─────────────────────────── */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: #020202; }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #B7D0CC, #383C33);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #a5c2bd, #292c25);
+}
+
+/* ─── Glassmorphism ────────────────────────────── */
+.glassmorphism {
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(183, 208, 204, 0.08);
+}
+
+.glassmorphism-card {
+  background: rgba(255, 255, 255, 0.015);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(183, 208, 204, 0.08);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glassmorphism-card:hover {
+  background: rgba(255, 255, 255, 0.035);
+  border-color: rgba(183, 208, 204, 0.25);
+  box-shadow:
+    0 25px 60px rgba(183, 208, 204, 0.06),
+    0 0 0 1px rgba(183, 208, 204, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  transform: translateY(-10px);
+}
+
+/* ─── Gradient text ────────────────────────────── */
+.gradient-text {
+  background: linear-gradient(135deg, #ffffff 0%, #B7D0CC 50%, #6A6B69 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─── Glow shadows ─────────────────────────────── */
+.glow-sage {
+  box-shadow: 0 0 40px rgba(183, 208, 204, 0.15), 0 0 80px rgba(183, 208, 204, 0.04);
+}
+
+/* ─── Shimmer button ───────────────────────────── */
+.glow-btn {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glow-btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -110%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.12) 50%,
+    transparent 100%
+  );
+  transition: left 0.7s ease;
+}
+
+.glow-btn:hover {
+  box-shadow: 0 0 28px rgba(183, 208, 204, 0.35), 0 6px 24px rgba(183, 208, 204, 0.18);
+  transform: translateY(-2px);
+}
+
+.glow-btn:hover::after {
+  left: 110%;
+}
+
+/* ─── Card accent top stripe ───────────────────── */
+.card-accent-purple::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  border-radius: 20px 20px 0 0;
+  background: linear-gradient(90deg, #8b5cf6, #3b82f6);
+}
+
+.card-accent-rose::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  border-radius: 20px 20px 0 0;
+  background: linear-gradient(90deg, #f43f5e, #8b5cf6);
+}
+
+.card-accent-emerald::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  border-radius: 20px 20px 0 0;
+  background: linear-gradient(90deg, #10b981, #3b82f6);
+}
+
+.card-accent-cyan::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  border-radius: 20px 20px 0 0;
+  background: linear-gradient(90deg, #06b6d4, #3b82f6);
+}
+
+.card-accent-amber::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  border-radius: 20px 20px 0 0;
+  background: linear-gradient(90deg, #f59e0b, #ec4899);
+}
+
+/* New Theme Specific Accent Stripes */
+.card-accent-sage::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  border-radius: 20px 20px 0 0;
+  background: linear-gradient(90deg, #B7D0CC, #383C33);
+}
