@@ -1,23 +1,18 @@
 "use client";
-
 import { motion, Variants } from "framer-motion";
-import { Award, Trophy, Users, Star, Lightbulb, Cpu } from "lucide-react";
+import { Award, Trophy, Users, Star, Cpu } from "lucide-react";
 import Image from "next/image";
-
 export default function Achievements() {
   const textVariants: Variants = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: "easeOut" } },
   };
-
   return (
     <section id="achievements" className="py-32 relative overflow-hidden">
       {/* Background blobs */}
       <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-96 h-96 bg-[#383C33]/10 blur-[130px] pointer-events-none animate-pulse-slow" />
       <div className="absolute bottom-10 left-10 w-72 h-72 bg-[#B7D0CC]/5 blur-[110px] pointer-events-none" />
-
       <div className="max-w-7xl mx-auto px-6 relative z-10">
-
         {/* Section Header */}
         <div className="text-center mb-20">
           <motion.div
@@ -30,7 +25,6 @@ export default function Achievements() {
             <span className="w-1.5 h-1.5 rounded-full bg-[#B7D0CC]" />
             04 &mdash; Milestones
           </motion.div>
-
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -41,7 +35,6 @@ export default function Achievements() {
           >
             Honors &amp; <span className="gradient-text">Achievements</span>
           </motion.h2>
-
           <motion.div
             initial={{ scaleX: 0 }}
             whileInView={{ scaleX: 1 }}
@@ -50,7 +43,6 @@ export default function Achievements() {
             className="w-14 h-1 bg-gradient-to-r from-[#B7D0CC] to-[#383C33] rounded-full mx-auto mt-5"
           />
         </div>
-
         {/* PRIMARY — Project Expo 2026 */}
         <div className="mb-10">
           <motion.div
@@ -63,10 +55,8 @@ export default function Achievements() {
           >
             {/* Accent stripe */}
             <div className="absolute top-0 left-0 right-0 h-[3px] rounded-t-3xl bg-gradient-to-r from-[#B7D0CC] via-[#5c685b] to-[#383C33]" />
-
             {/* Glow spotlight */}
             <div className="absolute top-0 right-1/4 w-80 h-80 bg-[#B7D0CC]/8 rounded-full blur-[90px] pointer-events-none group-hover:bg-[#B7D0CC]/15 transition-all duration-700" />
-
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
               {/* Text */}
               <div className="lg:col-span-5 space-y-5 text-left order-2 lg:order-1">
@@ -74,7 +64,6 @@ export default function Achievements() {
                   <Trophy className="h-3.5 w-3.5 text-[#B7D0CC]" />
                   PRIMARY SHOWCASE
                 </div>
-
                 <div>
                   <h3 className="text-2xl sm:text-3xl font-extrabold font-display leading-tight text-white">
                     2nd Prize — Project Expo 2026
@@ -83,17 +72,14 @@ export default function Achievements() {
                     Sri Eshwar College of Engineering
                   </p>
                 </div>
-
                 <p className="text-slate-400 text-sm sm:text-base leading-relaxed">
                   Presented our AI-driven software solution at the annual Project Expo, securing the 2nd prize amongst highly competitive projects. Recognized for engineering excellence, practical implementation potential, and medical technology utility.
                 </p>
-
                 <div className="flex items-center gap-3 text-xs font-semibold text-slate-500">
                   <span className="px-3 py-1.5 rounded-xl bg-white/4 border border-white/6">Host: SECE</span>
                   <span className="px-3 py-1.5 rounded-xl bg-white/4 border border-white/6">Year: 2026</span>
                 </div>
               </div>
-
               {/* Image */}
               <div className="lg:col-span-7 order-1 lg:order-2 w-full">
                 <div className="relative aspect-[4/3] sm:aspect-[16/10] w-full rounded-2xl overflow-hidden border border-[#B7D0CC]/20 group-hover:border-[#B7D0CC]/40 transition-colors duration-300 shadow-inner shadow-black/80">
@@ -110,7 +96,6 @@ export default function Achievements() {
             </div>
           </motion.div>
         </div>
-
         {/* SECONDARY — Futurix & InnoHack */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-7 mb-10">
           {/* Futurix 2026 */}
@@ -147,7 +132,6 @@ export default function Achievements() {
               National Technical Symposium Symposia
             </div>
           </motion.div>
-
           {/* InnoHack 2K26 */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
@@ -183,19 +167,9 @@ export default function Achievements() {
             </div>
           </motion.div>
         </div>
-
         {/* ADDITIONAL — Timeline cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
           {[
-            {
-              id: "achievement-ideathon",
-              icon: <Lightbulb className="h-5 w-5" />,
-              iconColor: "text-purple-400",
-              iconBg: "bg-purple-500/10 border-purple-500/20",
-              title: "Ideathon",
-              desc: "Selected as Finalist after multiple competitive rounds.",
-              delay: 0,
-            },
             {
               id: "achievement-sih",
               icon: <Star className="h-5 w-5" />,
@@ -203,7 +177,7 @@ export default function Achievements() {
               iconBg: "bg-blue-500/10 border-blue-500/20",
               title: "SIH 2024 Internals",
               desc: "Selected up to Final Round in institutional trials.",
-              delay: 0.1,
+              delay: 0,
             },
             {
               id: "achievement-genai",
@@ -212,7 +186,7 @@ export default function Achievements() {
               iconBg: "bg-cyan-500/10 border-cyan-500/20",
               title: "Gen-AI Hackathon",
               desc: "Participated and developed a Generative AI application.",
-              delay: 0.2,
+              delay: 0.1,
             },
           ].map((item) => (
             <motion.div
@@ -236,7 +210,6 @@ export default function Achievements() {
             </motion.div>
           ))}
         </div>
-
       </div>
     </section>
   );
