@@ -1,8 +1,6 @@
 "use client";
-
 import { motion, Variants } from "framer-motion";
-import { ExternalLink, Brain, Heart, Soup, ScanLine, Radio } from "lucide-react";
-
+import { ExternalLink, Brain, Heart, Soup, ScanLine, Radio, UserCheck } from "lucide-react";
 // Custom Github Icon SVG
 const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
@@ -18,7 +16,6 @@ const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => (
     <path d="M9 18c-4.51 2-5-2-7-2" />
   </svg>
 );
-
 interface Project {
   title: string;
   description: string;
@@ -30,7 +27,6 @@ interface Project {
   tagStyle: string;
   svgGraphic: React.ReactNode;
 }
-
 const projects: Project[] = [
   {
     title: "AlgomateAI",
@@ -123,8 +119,8 @@ const projects: Project[] = [
     description:
       "An IoT-based assistive navigation device for visually impaired individuals using ultrasonic sensing and audio/vibration feedback.",
     tags: ["Embedded Systems", "Arduino", "Sensors", "Hardware"],
-    githubUrl: "https://github.com/SriPonRama",
-    demoUrl: "#",
+    githubUrl: "",
+    demoUrl: "",
     icon: <Radio className="h-5 w-5 text-amber-400" />,
     accentClass: "card-accent-amber",
     tagStyle: "bg-amber-500/10 text-amber-300 border-amber-500/20 hover:border-amber-500/40",
@@ -138,8 +134,26 @@ const projects: Project[] = [
       </svg>
     ),
   },
+  {
+    title: "Auto Attendance Tracker",
+    description:
+      "A web-based intelligent attendance management system that automates student attendance using face recognition (OpenCV/LBPH). Supports enrollment, timetable scheduling, and Excel reports.",
+    tags: ["Python", "Flask", "OpenCV", "SQLite", "OpenPyXL", "Jinja2"],
+    githubUrl: "https://github.com/SriPonRama",
+    demoUrl: "#",
+    icon: <UserCheck className="h-5 w-5 text-indigo-400" />,
+    accentClass: "card-accent-indigo",
+    tagStyle: "bg-indigo-500/10 text-indigo-300 border-indigo-500/20 hover:border-indigo-500/40",
+    svgGraphic: (
+      <svg className="w-full h-full text-indigo-400/25" viewBox="0 0 200 120" fill="none">
+        <circle cx="100" cy="50" r="20" stroke="currentColor" strokeWidth="1.5" />
+        <path d="M78 88 C78 77 88 72 100 72 C112 72 122 77 122 88" stroke="currentColor" strokeWidth="1.5" />
+        <rect x="65" y="15" width="70" height="85" rx="5" stroke="currentColor" strokeWidth="1" strokeDasharray="3 3" />
+        <motion.line x1="60" y1="25" x2="140" y2="25" stroke="#6366f1" strokeWidth="2" animate={{ y: [0, 65, 0] }} transition={{ repeat: Infinity, duration: 3.5, ease: "easeInOut" }} />
+      </svg>
+    ),
+  },
 ];
-
 export default function Projects() {
   const cardVariants: Variants = {
     hidden: { opacity: 0, y: 50 },
@@ -149,14 +163,11 @@ export default function Projects() {
       transition: { duration: 0.6, ease: "easeOut" },
     },
   };
-
   return (
     <section id="projects" className="py-32 relative overflow-hidden">
       {/* Background blob */}
       <div className="absolute top-1/3 left-0 w-96 h-96 bg-[#383C33]/10 blur-[130px] pointer-events-none animate-pulse-slow" />
-
       <div className="max-w-7xl mx-auto px-6 relative z-10">
-
         {/* Section Header */}
         <div className="text-center mb-20">
           <motion.div
@@ -169,7 +180,6 @@ export default function Projects() {
             <span className="w-1.5 h-1.5 rounded-full bg-[#B7D0CC]" />
             03 &mdash; Portfolio
           </motion.div>
-
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -180,7 +190,6 @@ export default function Projects() {
           >
             Featured <span className="gradient-text">Projects</span>
           </motion.h2>
-
           <motion.div
             initial={{ scaleX: 0 }}
             whileInView={{ scaleX: 1 }}
@@ -189,7 +198,6 @@ export default function Projects() {
             className="w-14 h-1 bg-gradient-to-r from-[#B7D0CC] to-[#383C33] rounded-full mx-auto mt-5"
           />
         </div>
-
         {/* Projects Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
           {projects.map((project, index) => (
@@ -207,14 +215,12 @@ export default function Projects() {
             >
               {/* Inner hover glow */}
               <div className="absolute inset-0 bg-gradient-to-br from-[#B7D0CC]/6 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-3xl" />
-
               <div className="relative z-10">
                 {/* SVG Graphic */}
                 <div className="h-40 w-full rounded-2xl bg-black/50 border border-white/5 group-hover:border-[#B7D0CC]/25 flex items-center justify-center relative overflow-hidden mb-5 transition-colors duration-300">
                   <div className="absolute inset-0 bg-gradient-to-tr from-[#B7D0CC]/6 to-transparent pointer-events-none" />
                   <div className="w-36">{project.svgGraphic}</div>
                 </div>
-
                 {/* Header */}
                 <div className="flex items-center gap-3 mb-3">
                   <span className="p-2 rounded-xl bg-white/5 border border-white/6">
@@ -222,12 +228,10 @@ export default function Projects() {
                   </span>
                   <h3 className="text-xl font-bold font-display text-white">{project.title}</h3>
                 </div>
-
                 <p className="text-slate-400 text-sm leading-relaxed mb-5">
                   {project.description}
                 </p>
               </div>
-
               <div className="relative z-10">
                 {/* Tech Tags */}
                 <div className="flex flex-wrap gap-1.5 mb-5">
@@ -240,30 +244,41 @@ export default function Projects() {
                     </span>
                   ))}
                 </div>
-
                 {/* Actions */}
-                <div className="flex items-center gap-3 pt-4 border-t border-white/6">
-                  <a
-                    href={project.githubUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex-1 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-white font-semibold text-xs flex items-center justify-center gap-1.5 border border-white/8 hover:border-white/15 transition-all duration-200"
-                  >
-                    <GithubIcon className="h-3.5 w-3.5" /> GitHub
-                  </a>
-                  <a
-                    href={project.demoUrl}
-                    onClick={(e) => {
-                      if (project.demoUrl === "#") {
-                        e.preventDefault();
-                        alert("Live demo coming soon!");
-                      }
-                    }}
-                    className="flex-1 py-2.5 rounded-xl bg-[#B7D0CC] hover:bg-[#a5c2bd] text-black font-semibold text-xs flex items-center justify-center gap-1.5 shadow-md shadow-[#B7D0CC]/15 transition-all duration-200 glow-btn"
-                  >
-                    <ExternalLink className="h-3.5 w-3.5" /> Live Demo
-                  </a>
-                </div>
+                {(project.githubUrl || project.demoUrl) ? (
+                  <div className="flex items-center gap-3 pt-4 border-t border-white/6">
+                    {project.githubUrl && (
+                      <a
+                        href={project.githubUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex-1 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-white font-semibold text-xs flex items-center justify-center gap-1.5 border border-white/8 hover:border-white/15 transition-all duration-200"
+                      >
+                        <GithubIcon className="h-3.5 w-3.5" /> GitHub
+                      </a>
+                    )}
+                    {project.demoUrl && (
+                      <a
+                        href={project.demoUrl}
+                        onClick={(e) => {
+                          if (project.demoUrl === "#") {
+                            e.preventDefault();
+                            alert("Live demo coming soon!");
+                          }
+                        }}
+                        className="flex-1 py-2.5 rounded-xl bg-[#B7D0CC] hover:bg-[#a5c2bd] text-black font-semibold text-xs flex items-center justify-center gap-1.5 shadow-md shadow-[#B7D0CC]/15 transition-all duration-200 glow-btn"
+                      >
+                        <ExternalLink className="h-3.5 w-3.5" /> Live Demo
+                      </a>
+                    )}
+                  </div>
+                ) : (
+                  <div className="pt-4 border-t border-white/6 text-center">
+                    <span className="text-xs font-bold uppercase tracking-wider text-slate-500 bg-white/3 border border-white/8 px-3 py-1.5 rounded-xl block">
+                      Physical Hardware Project
+                    </span>
+                  </div>
+                )}
               </div>
             </motion.div>
           ))}
