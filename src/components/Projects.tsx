@@ -1,6 +1,6 @@
 "use client";
 import { motion, Variants } from "framer-motion";
-import { ExternalLink, Brain, Heart, Soup, ScanLine, Radio, UserCheck } from "lucide-react";
+import { ExternalLink, Brain, Heart, Soup, Radio, UserCheck, Sprout } from "lucide-react";
 // Custom Github Icon SVG
 const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
@@ -26,6 +26,7 @@ interface Project {
   accentClass: string;
   tagStyle: string;
   svgGraphic: React.ReactNode;
+  inProgress?: boolean;
 }
 const projects: Project[] = [
   {
@@ -38,6 +39,7 @@ const projects: Project[] = [
     icon: <Brain className="h-5 w-5 text-purple-400" />,
     accentClass: "card-accent-purple",
     tagStyle: "bg-purple-500/10 text-purple-300 border-purple-500/20 hover:border-purple-500/40",
+    inProgress: true,
     svgGraphic: (
       <svg className="w-full h-full text-purple-400/25" viewBox="0 0 200 120" fill="none">
         <circle cx="100" cy="60" r="25" stroke="currentColor" strokeWidth="1.5" strokeDasharray="4 2" />
@@ -59,7 +61,7 @@ const projects: Project[] = [
       "A smart blood donor management platform that efficiently connects donors and recipients, helping reduce emergency response time through location-aware matching.",
     tags: ["Python", "Flask", "SQLite", "Leaflet.js"],
     githubUrl: "https://github.com/SriPonRama",
-    demoUrl: "#",
+    demoUrl: "https://winterproject-frontend.onrender.com",
     icon: <Heart className="h-5 w-5 text-rose-400" />,
     accentClass: "card-accent-rose",
     tagStyle: "bg-rose-500/10 text-rose-300 border-rose-500/20 hover:border-rose-500/40",
@@ -95,22 +97,22 @@ const projects: Project[] = [
     ),
   },
   {
-    title: "MediScan AI",
+    title: "Plant Disease Detection System",
     description:
-      "An AI-powered medical diagnosis platform that analyzes X-ray images using image processing and probabilistic prediction techniques, featuring multilingual support and patient management.",
-    tags: ["Flask", "OpenCV", "Python", "ML", "ImageProc"],
+      "An AI-powered web platform that detects plant leaf diseases using deep learning, providing treatment recommendations, history logs, and medicine purchase options.",
+    tags: ["Python", "Flask", "TensorFlow", "React", "Vite", "TailwindCSS"],
     githubUrl: "https://github.com/SriPonRama",
-    demoUrl: "#",
-    icon: <ScanLine className="h-5 w-5 text-cyan-400" />,
-    accentClass: "card-accent-cyan",
-    tagStyle: "bg-cyan-500/10 text-cyan-300 border-cyan-500/20 hover:border-cyan-500/40",
+    demoUrl: "https://plantdiseasedetection-mhf8.onrender.com",
+    icon: <Sprout className="h-5 w-5 text-emerald-400" />,
+    accentClass: "card-accent-emerald",
+    tagStyle: "bg-emerald-500/10 text-emerald-300 border-emerald-500/20 hover:border-emerald-500/40",
     svgGraphic: (
-      <svg className="w-full h-full text-cyan-400/25" viewBox="0 0 200 120" fill="none">
-        <rect x="50" y="20" width="100" height="80" rx="6" stroke="currentColor" strokeWidth="1.5" />
-        <line x1="50" y1="40" x2="150" y2="40" stroke="currentColor" strokeWidth="0.8" />
-        <line x1="50" y1="80" x2="150" y2="80" stroke="currentColor" strokeWidth="0.8" />
-        <circle cx="100" cy="60" r="18" stroke="currentColor" strokeWidth="1" strokeDasharray="3 3" />
-        <motion.line x1="55" y1="30" x2="145" y2="30" stroke="#06b6d4" strokeWidth="2" animate={{ y: [0, 60, 0] }} transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }} />
+      <svg className="w-full h-full text-emerald-400/25" viewBox="0 0 200 120" fill="none">
+        <path d="M100 20 C60 50 60 90 100 100 C140 90 140 50 100 20 Z" stroke="currentColor" strokeWidth="1.5" />
+        <path d="M100 20 L100 100" stroke="currentColor" strokeWidth="1" strokeDasharray="3 3" />
+        <circle cx="85" cy="60" r="4" fill="currentColor" fillOpacity="0.3" />
+        <circle cx="115" cy="75" r="5" fill="currentColor" fillOpacity="0.3" />
+        <motion.line x1="55" y1="30" x2="145" y2="30" stroke="#10b981" strokeWidth="2" animate={{ y: [0, 65, 0] }} transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }} />
       </svg>
     ),
   },
@@ -135,12 +137,12 @@ const projects: Project[] = [
     ),
   },
   {
-    title: "Auto Attendance Tracker",
+    title: "Automated Attendance Tracking System",
     description:
       "A web-based intelligent attendance management system that automates student attendance using face recognition (OpenCV/LBPH). Supports enrollment, timetable scheduling, and Excel reports.",
     tags: ["Python", "Flask", "OpenCV", "SQLite", "OpenPyXL", "Jinja2"],
     githubUrl: "https://github.com/SriPonRama",
-    demoUrl: "#",
+    demoUrl: "https://automated-attendance-tracking-system.onrender.com",
     icon: <UserCheck className="h-5 w-5 text-indigo-400" />,
     accentClass: "card-accent-indigo",
     tagStyle: "bg-indigo-500/10 text-indigo-300 border-indigo-500/20 hover:border-indigo-500/40",
@@ -258,18 +260,26 @@ export default function Projects() {
                       </a>
                     )}
                     {project.demoUrl && (
-                      <a
-                        href={project.demoUrl}
-                        onClick={(e) => {
-                          if (project.demoUrl === "#") {
-                            e.preventDefault();
-                            alert("Live demo coming soon!");
-                          }
-                        }}
-                        className="flex-1 py-2.5 rounded-xl bg-[#B7D0CC] hover:bg-[#a5c2bd] text-black font-semibold text-xs flex items-center justify-center gap-1.5 shadow-md shadow-[#B7D0CC]/15 transition-all duration-200 glow-btn"
-                      >
-                        <ExternalLink className="h-3.5 w-3.5" /> Live Demo
-                      </a>
+                      project.inProgress ? (
+                        <div className="flex-grow flex items-center justify-center py-2.5 rounded-xl bg-white/3 border border-dashed border-white/10 text-slate-500 font-semibold text-xs cursor-default">
+                          In Progress
+                        </div>
+                      ) : (
+                        <a
+                          href={project.demoUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(e) => {
+                            if (project.demoUrl === "#") {
+                              e.preventDefault();
+                              alert("Live demo coming soon!");
+                            }
+                          }}
+                          className="flex-1 py-2.5 rounded-xl bg-[#B7D0CC] hover:bg-[#a5c2bd] text-black font-semibold text-xs flex items-center justify-center gap-1.5 shadow-md shadow-[#B7D0CC]/15 transition-all duration-200 glow-btn"
+                        >
+                          <ExternalLink className="h-3.5 w-3.5" /> Live Demo
+                        </a>
+                      )
                     )}
                   </div>
                 ) : (
