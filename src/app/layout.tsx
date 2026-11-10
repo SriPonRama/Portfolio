@@ -6,7 +6,8 @@ import { site, socials } from "@/content/profile";
 import { projects } from "@/content/projects";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
-const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
+// Mono is only used for small labels, so it isn't preloaded (keeps the critical path to one font file).
+const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"], preload: false });
 
 const description = `${site.role} at Sri Eshwar College of Engineering. ${site.headline} BloodLink, MediScan AI, Smart Attendance and more.`;
 

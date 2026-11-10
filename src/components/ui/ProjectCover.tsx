@@ -8,12 +8,12 @@ import type { Project } from "@/content/projects";
 export default function ProjectCover({
   project,
   sizes,
-  priority = false,
+  eager = false,
   className = "",
 }: {
   project: Project;
   sizes: string;
-  priority?: boolean;
+  eager?: boolean;
   className?: string;
 }) {
   return (
@@ -24,7 +24,7 @@ export default function ProjectCover({
           alt={project.image.alt}
           fill
           sizes={sizes}
-          priority={priority}
+          loading={eager ? "eager" : "lazy"}
           className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.02]"
         />
       ) : (

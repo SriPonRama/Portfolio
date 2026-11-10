@@ -57,6 +57,7 @@
 }
 
 html {
+  overflow-x: clip; /* clip (not hidden) keeps position: sticky working */
   scroll-behavior: smooth;
   scroll-padding-top: 5rem;
   -webkit-text-size-adjust: 100%;
@@ -70,6 +71,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  overflow-x: clip; /* full-bleed backdrops & marquees never cause sideways scroll */
 }
 
 ::selection {
@@ -89,9 +91,9 @@ html.js .reveal {
   opacity: 0;
   transform: translateY(12px);
   transition:
-    opacity 600ms cubic-bezier(0.22, 1, 0.36, 1),
-    transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
-  transition-delay: var(--reveal-delay, 0ms);
+    opacity 600ms cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms),
+    transform 600ms cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms),
+    translate 300ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 html.js .reveal[data-visible="true"] {
   opacity: 1;
@@ -107,15 +109,204 @@ html.js .reveal[data-visible="true"] {
   );
 }
 
+/* ═══════════════════════ Motion system ═══════════════════════
+   All motion is transform/opacity based and switched off under prefers-reduced-motion. */
+
+:root {
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ── Hero name: letters slide up from behind a mask, one after another.
+   Transform-only (never opacity) so the hero paints immediately and LCP isn't delayed. ── */
+@keyframes letter-in {
+  from { transform: translateY(105%) rotate(4deg); }
+  to   { transform: none; }
+}
+.letter {
+  display: inline-block;
+  animation: letter-in 700ms var(--ease-out) both;
+  animation-delay: calc(var(--i) * 28ms);
+}
+
+/* ── Hero lines: a short slide on load, no fade (content is visible from the first paint) ── */
+@keyframes rise {
+  from { transform: translateY(18px); }
+  to   { transform: none; }
+}
+.rise {
+  animation: rise 700ms var(--ease-out) both;
+  animation-delay: var(--d, 0ms);
+}
+
+/* ── Generic fade-up for small, non-critical elements ── */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: none; }
+}
+.fade-up {
+  animation: fade-up 700ms var(--ease-out) both;
+  animation-delay: var(--d, 0ms);
+}
+
+/* ── Section titles: each word slides up out of a mask when revealed ── */
+.word-mask { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: 0.08em; margin-bottom: -0.08em; }
+.word {
+  display: inline-block;
+  transition: transform 800ms var(--ease-out);
+  transition-delay: calc(var(--w) * 60ms);
+}
+html.js .reveal .word { transform: translateY(105%); }
+html.js .reveal[data-visible="true"] .word { transform: none; }
+
+/* ── Staggered children inside a revealed block ── */
+html.js .reveal .stagger > *,
+html.js .reveal.stagger > * {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 500ms var(--ease-out), transform 500ms var(--ease-out);
+}
+html.js .reveal[data-visible="true"] .stagger > *,
+html.js .reveal.stagger[data-visible="true"] > * { opacity: 1; transform: none; }
+.stagger > :nth-child(1) { transition-delay: 60ms; }
+.stagger > :nth-child(2) { transition-delay: 120ms; }
+.stagger > :nth-child(3) { transition-delay: 180ms; }
+.stagger > :nth-child(4) { transition-delay: 240ms; }
+.stagger > :nth-child(5) { transition-delay: 300ms; }
+.stagger > :nth-child(6) { transition-delay: 360ms; }
+.stagger > :nth-child(7) { transition-delay: 420ms; }
+.stagger > :nth-child(8) { transition-delay: 480ms; }
+
+/* ── Running text (marquee) ── */
+@keyframes marquee {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-50%, 0, 0); }
+}
+.marquee {
+  mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee var(--speed, 40s) linear infinite;
+  animation-direction: var(--dir, normal);
+}
+.marquee:hover .marquee-track { animation-play-state: paused; }
+
+.text-outline {
+  color: transparent;
+  -webkit-text-stroke: 1px var(--line-strong);
+}
+.text-outline-hover:hover { color: var(--accent); -webkit-text-stroke-color: var(--accent); }
+
+/* ── Rotating light beam around a frame (hero portrait).
+   A big conic gradient spins behind the content (transform only → GPU-composited);
+   the 1px padding leaves just a thin moving ring visible. */
+@keyframes spin { to { transform: rotate(360deg); } }
+.beam-border {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: 1px;
+}
+.beam-border::before {
+  content: "";
+  position: absolute;
+  inset: -50%;
+  background: conic-gradient(from 0deg, transparent 0 70%, var(--accent) 85%, transparent 100%);
+  animation: spin 5s linear infinite;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* ── Cursor-following border glow on cards (see components/fx/PointerGlow.tsx) ── */
+.glow-card { position: relative; isolation: isolate; }
+.glow-card::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: radial-gradient(260px circle at var(--mx, -999px) var(--my, -999px), var(--accent), transparent 60%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 300ms ease;
+  pointer-events: none;
+  z-index: 2;
+}
+.glow-card:hover::after { opacity: 0.9; }
+.glow-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(400px circle at var(--mx, -999px) var(--my, -999px), color-mix(in oklab, var(--accent) 6%, transparent), transparent 60%);
+  opacity: 0;
+  transition: opacity 300ms ease;
+  pointer-events: none;
+  z-index: -1;
+}
+.glow-card:hover::before { opacity: 1; }
+
+/* ── Text "roll" hover: label slides up and a copy slides in from below ── */
+.roll { display: inline-flex; overflow: hidden; position: relative; }
+.roll > span { display: inline-block; transition: transform 400ms var(--ease-out); }
+.roll > span + span { position: absolute; inset: 0; transform: translateY(110%); }
+.group:hover .roll > span:first-child,
+.roll:hover > span:first-child { transform: translateY(-110%); }
+.group:hover .roll > span + span,
+.roll:hover > span + span { transform: translateY(0); }
+
+/* ── Typing caret ── */
+@keyframes blink { 50% { opacity: 0; } }
+.caret::after {
+  content: "";
+  display: inline-block;
+  width: 0.55em;
+  height: 1.05em;
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  background: var(--accent);
+  animation: blink 1s steps(1) infinite;
+}
+
+/* ── Floating, gently bobbing elements ── */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+.float { animation: float 6s ease-in-out infinite; }
+
+@keyframes scroll-cue {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(200%); }
+}
+
+/* ── Page enter (case studies) ── */
+.page-in { animation: fade-up 600ms var(--ease-out) both; }
+
+/* ── Dotted grid backdrop for the hero, fading out at the edges ── */
+.dot-grid {
+  background-image: radial-gradient(var(--line-strong) 1px, transparent 1px);
+  background-size: 22px 22px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 30%, transparent 75%);
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
-  .reveal {
+  html.js .reveal,
+  html.js .reveal .word,
+  html.js .reveal .stagger > *,
+html.js .reveal.stagger > * {
     opacity: 1;
     transform: none;
     transition: none;
   }
+  .marquee-track { animation: none; }
   *,
   *::before,
   *::after {

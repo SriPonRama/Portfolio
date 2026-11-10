@@ -1,12 +1,9 @@
-"use client";
-
-import { useEffect, useRef, type ReactNode, type ElementType } from "react";
+import type { ReactNode, ElementType, CSSProperties } from "react";
 
 /**
  * Fades content up once when it first scrolls into view.
- * CSS-only transition (see .reveal in globals.css) and fully disabled by prefers-reduced-motion.
- * Content is visible without JS because the observer only runs after hydration;
- * the html.js class gates the hidden state.
+ * Pure markup — the shared observer in components/fx/PageFx.tsx flips data-visible.
+ * The hidden state only applies under html.js, so no-JS visitors always see everything.
  */
 export default function Reveal({
   children,
@@ -19,30 +16,8 @@ export default function Reveal({
   as?: ElementType;
   className?: string;
 }) {
-  const ref = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          el.dataset.visible = "true";
-          io.disconnect();
-        }
-      },
-      { rootMargin: "0px 0px -10% 0px", threshold: 0.05 },
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
-
   return (
-    <Tag
-      ref={ref}
-      className={`reveal ${className}`}
-      style={{ "--reveal-delay": `${delay}ms` } as React.CSSProperties}
-    >
+    <Tag className={`reveal ${className}`} style={delay ? ({ "--reveal-delay": `${delay}ms` } as CSSProperties) : undefined}>
       {children}
     </Tag>
   );

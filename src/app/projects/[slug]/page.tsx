@@ -4,10 +4,10 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { getProject, projects } from "@/content/projects";
 import { site } from "@/content/profile";
-import MobileBar from "@/components/site/MobileBar";
+import Navbar from "@/components/site/Navbar";
+import PageFx from "@/components/fx/PageFx";
+import Tilt from "@/components/fx/Tilt";
 import Footer from "@/components/site/Footer";
-import ThemeToggle from "@/components/site/ThemeToggle";
-import { CommandMenuButton } from "@/components/site/CommandMenu";
 import ProjectCover from "@/components/ui/ProjectCover";
 import { ExternalLink, TagList } from "@/components/ui/primitives";
 
@@ -30,7 +30,6 @@ export async function generateMetadata({ params }: PageProps<"/projects/[slug]">
       url: `/projects/${p.slug}`,
       title: `${p.title} — case study by ${site.shortName}`,
       description: p.summary,
-      ...(p.image && { images: [{ url: p.image.src, alt: p.image.alt }] }),
     },
   };
 }
@@ -54,23 +53,15 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
 
   return (
     <>
-      <MobileBar home={false} />
-      <div className="mx-auto max-w-3xl px-6 pt-20 md:px-10 lg:pt-16">
-        <nav className="hidden items-center justify-between lg:flex" aria-label="Page">
-          <Link href="/#projects" className="group inline-flex items-center gap-2 text-sm font-medium text-muted hover:text-fg">
-            <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" aria-hidden="true" />
-            {site.shortName}
-          </Link>
-          <div className="flex items-center gap-2">
-            <CommandMenuButton />
-            <ThemeToggle />
-          </div>
-        </nav>
-        <Link href="/#projects" className="mt-4 inline-flex items-center gap-2 text-sm text-muted hover:text-fg lg:hidden">
-          <ArrowLeft className="h-4 w-4" aria-hidden="true" /> All projects
+      <PageFx />
+      <Navbar home={false} />
+      <div className="mx-auto max-w-3xl px-6 pt-28 md:px-10">
+        <Link href="/#projects" className="group inline-flex items-center gap-2 text-sm font-medium text-muted hover:text-fg">
+          <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" aria-hidden="true" />
+          All projects
         </Link>
 
-        <main id="main" className="pt-10 lg:pt-16">
+        <main id="main" className="page-in pt-10">
           <header>
             <p className="font-mono text-xs uppercase tracking-[0.18em] text-subtle">
               Case study · {p.year}
@@ -87,7 +78,9 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
             </div>
           </header>
 
-          <ProjectCover project={p} sizes="(min-width: 768px) 720px, 100vw" priority className="mt-10" />
+          <Tilt max={4} className="mt-10 rounded-lg">
+            <ProjectCover project={p} sizes="(min-width: 768px) 720px, 100vw" eager />
+          </Tilt>
 
           <dl className="mt-6 grid grid-cols-3 divide-x divide-line rounded-lg border border-line">
             {p.metrics.map((m) => (
@@ -141,7 +134,7 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
 
           <Link
             href={`/projects/${next.slug}`}
-            className="group mt-20 flex items-center justify-between rounded-xl border border-line p-6 transition-colors hover:border-line-strong hover:bg-surface"
+            className="glow-card group mt-20 flex items-center justify-between rounded-xl border border-line p-6 transition-colors hover:bg-surface"
           >
             <span>
               <span className="block font-mono text-[11px] uppercase tracking-[0.18em] text-subtle">Next project</span>

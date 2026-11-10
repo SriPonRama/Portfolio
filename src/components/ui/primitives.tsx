@@ -1,10 +1,12 @@
 import type { ReactNode } from "react";
 import { ArrowUpRight } from "lucide-react";
+import { nav } from "@/content/site";
+import Reveal from "./Reveal";
 
 /** Small mono pill for tech stacks. */
 export function Tag({ children }: { children: ReactNode }) {
   return (
-    <li className="rounded-md bg-accent-soft px-2 py-1 font-mono text-[11px] leading-none text-accent">
+    <li className="cursor-default rounded-md bg-accent-soft px-2 py-1 font-mono text-[11px] leading-none text-accent transition-all duration-200 hover:-translate-y-0.5 hover:bg-accent-fill hover:text-accent-on">
       {children}
     </li>
   );
@@ -20,28 +22,42 @@ export function TagList({ items, label = "Technologies used" }: { items: readonl
   );
 }
 
-/**
- * Section wrapper. On mobile a sticky heading labels the section;
- * on desktop the sidebar nav does that job, so the heading is visually hidden but kept for screen readers.
- */
+/** Full-width section with a numbered eyebrow, a title and an optional one-line intro. */
 export function Section({
   id,
+  eyebrow,
   title,
+  intro,
   children,
   className = "",
 }: {
   id: string;
+  eyebrow: string;
   title: string;
+  intro?: string;
   children: ReactNode;
   className?: string;
 }) {
+  const n = nav.findIndex((s) => s.id === id) + 1;
   return (
-    <section id={id} aria-labelledby={`${id}-title`} className={`scroll-mt-20 lg:scroll-mt-24 ${className}`}>
-      <div className="sticky top-14 z-10 -mx-6 mb-6 bg-bg/85 px-6 py-4 backdrop-blur md:-mx-10 md:px-10 lg:static lg:mx-0 lg:mb-8 lg:bg-transparent lg:p-0 lg:backdrop-blur-none">
-        <h2 id={`${id}-title`} className="font-mono text-xs font-medium uppercase tracking-[0.18em] text-fg lg:text-subtle">
-          {title}
+    <section id={id} aria-labelledby={`${id}-title`} className={`scroll-mt-24 ${className}`}>
+      <Reveal as="header" className="mb-10 lg:mb-14">
+        <p className="flex items-center gap-3 font-mono text-xs uppercase tracking-[0.18em] text-accent">
+          {n > 0 && <span className="text-subtle">{String(n).padStart(2, "0")}</span>}
+          <span className="h-px w-8 bg-line-strong" aria-hidden="true" />
+          {eyebrow}
+        </p>
+        <h2 id={`${id}-title`} aria-label={title} className="mt-4 text-3xl font-semibold tracking-tight text-fg sm:text-5xl">
+          {title.split(" ").map((word, w) => (
+            <span key={w} aria-hidden="true" className="word-mask mr-[0.25em] last:mr-0">
+              <span className="word" style={{ "--w": w } as React.CSSProperties}>
+                {word}
+              </span>
+            </span>
+          ))}
         </h2>
-      </div>
+        {intro && <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-muted">{intro}</p>}
+      </Reveal>
       {children}
     </section>
   );
